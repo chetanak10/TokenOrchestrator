@@ -123,19 +123,31 @@ app.delete('/keys/:id', (req, res) => {
 // PUT /keys/:id: Block a key for further use
 app.put('/keys/:id', (req, res) => {
   const { id } = req.params;
-  const { blocked } = req.body;
-  
+  const { blocked, alive } = req.body; // you can extend with more fields later
+
   if (!keys[id]) {
     return res.status(404).json({ error: 'Key not found' });
   }
-  
-  if (typeof blocked !== 'boolean') {
-    return res.status(400).json({ error: 'Invalid request. "blocked" field must be a boolean' });
+
+  // If "blocked" is provided
+  if (blocked !== undefined) {
+    if (typeof blocked !== 'boolean') {
+      return res.status(400).json({ error: '"blocked" field must be a boolean' });
+    }
+    keys[id].blocked = blocked;
   }
-  
-  keys[id].blocked = blocked;
-  res.status(200).json({ message: `Key ${blocked ? 'blocked' : 'unblocked'} successfully` });
+
+  // If "alive" flag is provided (to refresh key manually)
+  if (alive === true) {
+    keys[id].lastSeenAt = Date.now();
+  }
+
+  res.status(200).json({
+    message: `Key ${id} updated successfully`,
+    data: keys[id]
+  });
 });
+
 
 // PUT /keys/:id/alive: Signal the server to keep the specified key alive
 app.put('/keys/:id/alive', (req, res) => {
