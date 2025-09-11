@@ -35,9 +35,9 @@ A server capable of generating, assigning, and managing API keys with specific f
 ### DELETE /keys/:id: Remove a specific key from the system
 - **Status:** 200 OK / 404 Not Found
 
-### PUT /keys/:id: Block a key for further use
+### PUT /keys/:id: Unblock a key for further use
 - **Status:** 200 OK / 404 Not Found
-- **Request Body:** `{"blocked": true|false}`
+- **Request Body:** `{"blocked": false}`
 
 ### PUT /keys/:id/alive: Signal the server to keep the specified key alive
 - **Status:** 200 OK / 404 Not Found
