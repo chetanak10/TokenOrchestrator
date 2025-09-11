@@ -146,8 +146,6 @@ app.put('/keys/:id', (req, res) => {
     message: `Key ${id} updated successfully`,
     data: keys[id]
   });
-});
-
 
 // PUT /keys/:id/alive: Signal the server to keep the specified key alive
 app.put('/keys/:id/alive', (req, res) => {
